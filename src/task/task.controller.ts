@@ -13,7 +13,7 @@ import {
 import { TaskService } from './task.service';
 import { Task, TaskStatus } from 'task.model';
 import { CreateTaskDto } from '../task/dto/create-task.dto';
-import { GetTaskFilterDto } from './dto/et-tasks-filter.dto';
+import { GetTaskFilterDto } from './dto/get-tasks-filter.dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 
 @Controller('task')
@@ -21,7 +21,7 @@ export class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Get()
-  getTasks(@Query() filterDto: GetTaskFilterDto): Task[] {
+  getTasks(@Query(ValidationPipe) filterDto: GetTaskFilterDto): Task[] {
     if (Object.keys(filterDto).length) {
       return this.taskService.getTaskWithFilters(filterDto);
     } else {
