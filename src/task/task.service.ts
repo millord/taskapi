@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TaskRepository } from './task.repository';
 import { Task } from './task.entity';
 
+import { TaskStatus } from './task-status-enum';
+
 @Injectable()
 export class TaskService {
   constructor(
@@ -38,25 +40,38 @@ export class TaskService {
     }
     return found;
   }
-}
 
-// deleteTask(id: string): void {
-//   const found = this.getTaskById(id);
-//   this.tasks = this.tasks.filter(task => task.id !== found.id);
-// }
-// createTask(CreateTaskDto: CreateTaskDto) {
-//   const { title, description } = CreateTaskDto;
-//   const task: Task = {
-//     id: uuidv4(),
-//     title,
-//     description,
-//     status: TaskStatus.OPEN,
-//   };
-//   this.tasks.push(task);
-//   return task;
-// }
-// updateTaskStatus(id: string, status: TaskStatus): Task {
-//   const task = this.getTaskById(id);
-//   task.status = status;
-//   return task;
-// }
+  // deleteTask(id: string): void {
+  //   const found = this.getTaskById(id);
+  //   this.tasks = this.tasks.filter(task => task.id !== found.id);
+  // }
+
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    const { title, description } = createTaskDto;
+
+    const task = new Task();
+    task.title = title;
+    task.description = description;
+    task.status = TaskStatus.OPEN;
+    await task.save();
+
+    return task;
+  }
+
+  // createTask(CreateTaskDto: CreateTaskDto) {
+  //   const { title, description } = CreateTaskDto;
+  //   const task: Task = {
+  //     id: uuidv4(),
+  //     title,
+  //     description,
+  //     status: TaskStatus.OPEN,
+  //   };
+  //   this.tasks.push(task);
+  //   return task;
+  // }
+  // updateTaskStatus(id: string, status: TaskStatus): Task {
+  //   const task = this.getTaskById(id);
+  //   task.status = status;
+  //   return task;
+  // }
+}
